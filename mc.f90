@@ -3,9 +3,6 @@
 
 program montecarlo
 
-!	integer::N
-!	N=10
-
 	real::a(10000000),b(10000000),c(10000000)
 	real::pi,d
 	integer :: i
