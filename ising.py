@@ -9,8 +9,9 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 # System parameters
-N   = 50	# Number of lattice sites
-beta= 1.0 	# Temperature
+N     = 20		# Number of lattice sites
+N_sim = 10000	# Simulation steps
+beta  = 0.01 	# Temperature
 
 # Total energy of the system
 def energy(state):
@@ -25,26 +26,23 @@ def energy(state):
 	energy+=-state[N-1,N-1]*(state[N-1,0]+state[0,N-1])		# Last entry in the matrix
 	return energy	
 
-#Intial state
-# ground_state = np.ones((N,N))
+
+def update(state):
+	for _ in range(N_sim):
+		old_state=state
+		old_ene = energy(old_state)
+		i = np.random.randint(N)
+		j = np.random.randint(N)
+		state[i,j] = (-1)*state[i,j]
+		new_ene = energy(state)
+		delta_E=new_ene-old_ene
+		if delta_E>0 or np.exp(-beta*delta_E)<np.random.uniform(0,1):
+			state[i,j] = (-1)*state[i,j]
+
+# Intial state
 state = 2*np.random.randint(2, size=(N,N))-1
-
-# Store an old state 
-old_state = state
-old_ene = energy(old_state)
-old_exp = np.exp(-beta*energy(old_state))
-
-# An update on the initial state by a spin flip
-i = np.random.randint(N)
-j = np.random.randint(N)
-state[i,j] = (-1)*state[i,j]
-new_ene = energy(state)
-new_exp = np.exp(-beta*energy(state))
-
-print("Total energy is", old_ene, "units")
-print("Total energy is", new_ene, "units")
-
-print(old_exp>new_exp)
+# Monte Carlo updates
+update(state)
 
 # Snapshot of the Ising model
 plt.imshow(state, interpolation='nearest')
@@ -52,5 +50,3 @@ plt.gray()
 plt.show()
 
 exit()
-
-# Animation of the monte carlo sweeps
