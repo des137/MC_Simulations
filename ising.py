@@ -18,9 +18,9 @@ def energy(state):
 	for i in range(N-1):
 		for j in range(N-1):
 			energy+=-state[i,j]*(state[i+1,j]+state[i,j+1]) 	
-	for i in range(N-1):						                			# Periodic boundary conditions
+	for i in range(N-1):						# Periodic boundary conditions
 		energy+=-state[i,N-1]*(state[i+1,N-1]+state[i,0]) 
-	for i in range(N-1):							                		# Periodic boundary conditions
+	for i in range(N-1):						# Periodic boundary conditions
 		energy+=-state[N-1,i]*(state[N-1,i+1]+state[0,i])
 	energy+=-state[N-1,N-1]*(state[N-1,0]+state[0,N-1])		# Last entry in the matrix
 	return energy	
