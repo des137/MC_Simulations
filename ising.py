@@ -9,9 +9,9 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 # System parameters
-N     = 20		# Number of lattice sites
+N     = 20	# Number of lattice sites
 N_sim = 300000	# Simulation steps
-N_coll= 100	    # Collected steps
+N_coll= 100	# Collected steps
 T     = 2.2 	# Temperature
 
 # Local energy change of the system after a spin flip
