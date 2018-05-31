@@ -8,9 +8,9 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 # System parameters
-N     = 20		          # Number of lattice sites
-N_sim = 3*10**5           # Simulation steps
-temp  = 2.3				  # Temperature
+N     = 20                # Number of lattice sites
+N_sim = 5*10**4           # Simulation steps
+temp  = 1.7               # Temperature
 
 #temp  = 0.05*np.array(15) # Temperature values(0.25:3.5)
 
@@ -18,6 +18,14 @@ temp  = 2.3				  # Temperature
 def diff_energy(state,i,j):
 	return 2*state[i,j]*(state[(i-1)%N,j]+state[i,(j-1)%N]+state[(i+1)%N,j]+state[i,(j+1)%N]) 	
 	
+# Energy of the state
+def total_neergy(state):
+	energy=0
+	for i in range(N):
+		for j in range(N):
+			energy+=state[i,j]*(state[(i+1)%N,j]+state[i,(j+1)%N])
+	return energy		
+
 def update(state):
 	for k in range(N_sim):		
 		i = np.random.randint(N)
@@ -26,12 +34,14 @@ def update(state):
 		if delta_E<0 or np.exp(-delta_E/temp)>np.random.uniform(0,1):
 			state[i,j] = (-1)*state[i,j]
 		magnetization[k] = state.sum()	
-			
+		energy[k]=total_energy(state)	
+
 # Intial state
 state = 2*np.random.randint(2, size=(N,N))-1
 
-# Magnetization value holder
+# Magnetization/energy value holder
 magnetization=np.zeros(N_sim)
+energy=np.zeros(N_sim)
 
 # Monte Carlo updates
 update(state)
@@ -47,6 +57,14 @@ plt.plot(magnetization)
 plt.xlabel('No. of sweeps')
 plt.ylabel('Net Magnetization')
 plt.ylim(-1.1*N**2,1.1*N**2)
+plt.grid(True)
+plt.show()
+
+# Net Magnetization as a functions of no. of Monte Carlo sweeps
+plt.plot(energy)
+plt.xlabel('No. of sweeps')
+plt.ylabel('Total Energy')
+#plt.ylim(-1.1*N**2,1.1*N**2)
 plt.grid(True)
 plt.show()
 
