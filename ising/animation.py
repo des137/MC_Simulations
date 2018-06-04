@@ -1,29 +1,50 @@
+# Animation of Ising model using Monte Carlo techniques
+# By Amol Deshmukh and Areg Ghazaryan, The City College of New York, June 2018
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import matplotlib.cm as cm
 
-Nx = 100
-Ny = 100
-Nf = 10000 #Number of frames
-nd = 10 #Delay between frames in miliseconds
+#Changes:I replaced two varibales Nx,Ny with a single variable N, since we'll simulate square ising model
 
-state = 2 * np.random.randint(2, size = (Nx, Ny)) - 1
+# Initial parameter
+N        = 10
+N_sweeps = 10**(4)    # Number of sweeps = number of frames
+nd       = 10**(-6)   # Delay between frames in miliseconds
+temp     = 10**(-1)
 
+# Initial random state
+state = 2 * np.random.randint(2, size = (N, N)) - 1
+
+# Frame set-up
 fig = plt.figure(frameon = False)
+im = plt.imshow(state, extent=(0, N, 0, N), #interpolation = 'none', 
+	animated = True, cmap = cm.binary)
 
-im = plt.imshow(state, extent=(0, Nx, 0, Ny), interpolation = 'none', animated = True, cmap = cm.binary)
+# Energy of the state
+def total_energy(state):
+    energy_val = 0
+    for i in range(N):
+        for j in range(N):
+            energy_val += -state[i,j]*(state[(i+1)%N,j]+state[i,(j+1)%N])
+    return energy_val       
 
-plt.xlabel('x')
-plt.ylabel('y')
+# Local energy change of the system after a spin flip
+def diff_energy(state,i,j):
+    return 2*state[i,j]*(state[(i-1)%N,j]+state[i,(j-1)%N]+state[(i+1)%N,j]+state[i,(j+1)%N])   
 
-def update(frame, *args):
-	i = np.random.randint(Nx)
-	j = np.random.randint(Ny)
-	state[i, j] *= -1
-	im.set_data(state)
-	return im,
+# Monte Carlo updates
+def update(frame):#, *args):
+    i = np.random.randint(N)
+    j = np.random.randint(N)
+    delta_E = diff_energy(state,i,j)                               # Change in energy
+    if delta_E<0 or np.exp(-delta_E/temp)>np.random.uniform(0,1):
+        state[i,j] *= -1                                           # Metropolis step
+    im.set_data(state)
+    return im,
 
-ani = animation.FuncAnimation(fig, update, frames = Nf, interval = nd, blit = True, repeat = False)
+# Animate
+ani = animation.FuncAnimation(fig, update, frames = N_sweeps, interval = nd, blit = True, repeat = False)
 
 plt.show()
