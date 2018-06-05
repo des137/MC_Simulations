@@ -9,10 +9,14 @@ import matplotlib.cm as cm
 #Changes:I replaced two varibales Nx,Ny with a single variable N, since we'll simulate square ising model
 
 # Initial parameter
-N        = 10
+N        = 100
 N_sweeps = 10**(4)    # Number of sweeps = number of frames
 nd       = 10**(-6)   # Delay between frames in miliseconds
-temp     = 10**(-1)
+temp     = 0.1
+expar = np.array([np.exp(-4.0 / temp), np.exp(-8.0 / temp)])
+counter = 0
+randm = 1000
+randa = np.random.randint(N, size = randm)
 
 # Initial random state
 state = 2 * np.random.randint(2, size = (N, N)) - 1
@@ -35,12 +39,22 @@ def diff_energy(state,i,j):
     return 2*state[i,j]*(state[(i-1)%N,j]+state[i,(j-1)%N]+state[(i+1)%N,j]+state[i,(j+1)%N])   
 
 # Monte Carlo updates
-def update(frame):#, *args):
-    i = np.random.randint(N)
-    j = np.random.randint(N)
-    delta_E = diff_energy(state,i,j)                               # Change in energy
-    if delta_E<0 or np.exp(-delta_E/temp)>np.random.uniform(0,1):
-        state[i,j] *= -1                                           # Metropolis step
+def update(frame): # *args):
+    global counter
+    global randa
+    if counter == randm :
+        randa = np.random.randint(N, size = randm)
+        counter = 0
+    i = randa[counter]
+    j = randa[counter + 1]
+    counter += 2
+    nnsum = state[(i-1)%N,j]+state[i,(j-1)%N]+state[(i+1)%N,j]+state[i,(j+1)%N]
+    if state[i, j] < 0:
+        if nnsum >= 0 or expar[-nnsum // 2 - 1] > np.random.uniform(0,1):
+            state[i,j] *= -1
+    else:
+        if nnsum <= 0 or expar[nnsum // 2 - 1] > np.random.uniform(0,1):
+            state[i,j] *= -1
     im.set_data(state)
     return im,
 
