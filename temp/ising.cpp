@@ -5,7 +5,7 @@ Amol Deshmukh
 
 #include <iostream>
 #include <ctime>
-#include <math.h>
+#include <cmath>
 #include <cstdlib>
 
 using namespace std;
@@ -13,7 +13,7 @@ using namespace std;
 int main()
 {
 	// Size of the lattice
-	int N_size = pow(10,3);
+	long int N_size {pow(10,3)};
 	int Latt[N_size][N_size];
 
 	// Random seed
@@ -39,7 +39,7 @@ int main()
 	}	
 
 	// Monte Carlo sweeps
-	int N_sweeps = pow(10,3);
+	long int N_sweeps {pow(10,3)};
 	for (int i=1; i < N_sweeps; ++i)
 	{	
 		int k,l;
