@@ -8,5 +8,3 @@ The image below shows a configuration of the Ising Model (256x256) after approxi
 <p align="center">
   <img src="https://github.com/des137/mcmc/blob/master/Intermediate_state.png" width="256" title="Ising Model">
 </p>
-
-## XY Model
