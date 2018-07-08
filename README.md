@@ -1,4 +1,5 @@
-# mcmc
+# Monte Carlo Simulations
+
 This repository contains algorithms based on either 'Monte Carlo' techniques or the concept of 'Markov Chain Monte Carlo', scripted  in either in Python or C++.
 
 ## Ising Model
