@@ -1,6 +1,6 @@
 # Monte Carlo Simulations
 
-This repository contains algorithms based on the concept of 'Markov Chain Monte Carlo' for the extraction of thermal eqilibrium properties of statistical systems. It contains codes for Monte Carlo simulations of well known statistical systems known as **'Ising model'** and **'XY model'**. Metropolis algorithm is applied for generating the the equilibrium configurations of these systems distributed according to Boltzmann distribution. The image below shows an example of a  configuration of the Ising Model on a lattice of size 256x256, obtained after approximately a million Markov chain Monte Carlo steps.
+This repository contains algorithms based on the concept of 'Markov Chain Monte Carlo' for the extraction of thermal equilibrium properties of statistical systems. It contains codes for Monte Carlo simulations of well known statistical systems known as **'Ising model'** and **'XY model'**. Metropolis algorithm is applied for generating the the equilibrium configurations of these systems distributed according to Boltzmann distribution. The image below shows an example of a  configuration of the Ising Model on a lattice of size 256x256, obtained after approximately a million Markov chain Monte Carlo steps.
 
 <p align="center">
   <img src="https://github.com/des137/mcmc/blob/master/Intermediate_state.png" width="256" title="Ising Model">
